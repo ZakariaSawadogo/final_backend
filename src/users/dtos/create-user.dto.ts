@@ -6,7 +6,7 @@ export class CreateUserDto {
   username: string;
 
   @IsString()
-  @MinLength(6, { message: 'Le mot de passe doit faire au moins 6 caractères' })
+  @MinLength(6, { message: 'Password must be at least 6 characters long' })
   password: string;
 
   @IsString()
@@ -19,9 +19,9 @@ export class CreateUserDto {
 
   @IsNumber()
   @IsNotEmpty()
-  profile_type_id: number; // 1=Admin, 2=Prof, 3=Student (selon ta BDD)
+  profile_type_id: number;
 
   @IsNumber()
   @IsOptional()
-  class_level_id?: number; // Obligatoire seulement pour les élèves
+  class_level_id?: number;
 }
