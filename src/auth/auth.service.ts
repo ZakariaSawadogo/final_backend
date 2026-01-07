@@ -22,8 +22,6 @@ export class AuthService {
   async login(user: any) {
     const payload = { username: user.username, sub: user.id, role: user.profileType?.name };
 
-    // CORRECTION ICI : On renvoie l'objet 'user' complet tel quel
-    // Il contient déjà profileType grâce au UsersService
     return {
       access_token: this.jwtService.sign(payload),
       user: user

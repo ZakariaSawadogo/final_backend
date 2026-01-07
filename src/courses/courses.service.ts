@@ -1,34 +1,41 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Course } from './course.entity';
 
 @Injectable()
 export class CoursesService {
-  constructor(
-    @InjectRepository(Course)
-    private repo: Repository<Course>,
-  ) {}
+  constructor(@InjectRepository(Course) private repo: Repository<Course>) {}
 
-  create(name: string, coefficient: number, classLevelId: number, teacherId: number) {
-    const course = this.repo.create({
-      name,
-      coefficient,
-      class_level_id: classLevelId,
-      teacher_id: teacherId,
-    });
-    return this.repo.save(course);
+  create(course: Partial<Course>) {
+    return this.repo.save(this.repo.create(course));
   }
 
   findAll() {
     return this.repo.find({ relations: ['classLevel', 'teacher'] });
   }
 
-  // Trouver les cours d'un prof spécifique
+  async findOne(id: number) {
+    const course = await this.repo.findOne({ where: { id }, relations: ['classLevel', 'teacher'] });
+    if (!course) throw new NotFoundException('Cours introuvable');
+    return course;
+  }
+
   findByTeacher(teacherId: number) {
-    return this.repo.find({
-      where: { teacher_id: teacherId },
-      relations: ['classLevel'],
-    });
+    return this.repo.find({ where: { teacher_id: teacherId }, relations: ['classLevel'] });
+  }
+
+  findByClass(classId: number) {
+    return this.repo.find({ where: { class_level_id: classId }, relations: ['teacher'] });
+  }
+
+  async update(id: number, attrs: Partial<Course>) {
+    await this.repo.update(id, attrs);
+    return this.findOne(id);
+  }
+
+  async remove(id: number) {
+    const course = await this.findOne(id);
+    return this.repo.remove(course);
   }
 }

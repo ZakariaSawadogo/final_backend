@@ -1,42 +1,37 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, Unique } from 'typeorm';
 import { User } from '../users/user.entity';
 import { Course } from '../courses/course.entity';
 
 @Entity('tbl_grade')
+@Unique(['student_id', 'course_id'])
 export class Grade {
   @PrimaryGeneratedColumn()
   id: number;
 
-  // Relation: Note obtenue par quel élève ?
+  @Column()
+  student_id: number;
+
   @ManyToOne(() => User, (user) => user.grades)
   @JoinColumn({ name: 'student_id' })
   student: User;
 
   @Column()
-  student_id: number;
+  course_id: number;
 
-  // Relation: Note dans quelle matière ?
   @ManyToOne(() => Course, (course) => course.grades)
   @JoinColumn({ name: 'course_id' })
   course: Course;
 
-  @Column()
-  course_id: number;
-
-  // Les notes sur 20
+  // CORRECTION ICI : Ajout de "| null"
   @Column({ type: 'float', nullable: true })
-  devoir1: number; // 25%
+  devoir1: number | null;
 
   @Column({ type: 'float', nullable: true })
-  devoir2: number; // 25%
+  devoir2: number | null;
 
   @Column({ type: 'float', nullable: true })
-  composition: number; // 50%
+  composition: number | null;
 
-  @Column({ default: 'T1' })
-  term: string;
-
-  // Moyenne de la matière (calculée par le service avant sauvegarde)
   @Column({ type: 'float', nullable: true })
-  average: number;
+  average: number | null;
 }

@@ -9,12 +9,11 @@ export class Course {
   id: number;
 
   @Column()
-  name: string; // Ex: "Mathématiques"
+  name: string;
 
   @Column({ type: 'int', default: 1 })
-  coefficient: number; // Le poids du cours (AKTS/Coeff)
+  coefficient: number;
 
-  // À quelle classe ce cours appartient ?
   @ManyToOne(() => ClassLevel, (cl) => cl.courses)
   @JoinColumn({ name: 'class_level_id' })
   classLevel: ClassLevel;
@@ -22,7 +21,7 @@ export class Course {
   @Column()
   class_level_id: number;
 
-  // Qui est le prof ?
+
   @ManyToOne(() => User, (user) => user.coursesGiven)
   @JoinColumn({ name: 'teacher_id' })
   teacher: User;
@@ -30,7 +29,7 @@ export class Course {
   @Column({ nullable: true })
   teacher_id: number;
 
-  // Les notes associées à ce cours
+
   @OneToMany(() => Grade, (grade) => grade.course)
   grades: Grade[];
 }

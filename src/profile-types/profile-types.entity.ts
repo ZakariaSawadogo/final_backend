@@ -7,7 +7,7 @@ export class ProfileType {
   id: number;
 
   @Column({ unique: true })
-  name: string; // 'ADMIN', 'PROF', 'STUDENT'
+  name: string;
 
   @OneToMany(() => User, (user) => user.profileType)
   users: User[];
