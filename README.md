@@ -1,6 +1,6 @@
 # 🏫 School Management System - Backend
 
-This is the API (Backend) for the School Management System, developed as part of the **CENG 307** course. It is a robust server-side application built with **NestJS**, serving as the central hub for managing users, courses, grades, and authentication.
+This is the API (Backend) for the School Management System, developed for my **Web Technologies** course. It is a robust server-side application built with **NestJS**, serving as the central hub for managing users, courses, grades, and authentication.
 
 The backend communicates with a **MySQL** database via **TypeORM** and exposes a RESTful API secured by **JWT**.
 
