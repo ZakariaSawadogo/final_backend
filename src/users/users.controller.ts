@@ -37,7 +37,7 @@ const storageConfig = diskStorage({
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  // --- LECTURE ---
+
   @Get()
   @Roles('ADMIN', 'PROF', 'STUDENT')
   findAll() {
@@ -71,7 +71,7 @@ export class UsersController {
   }
 
   @Patch(':id')
-  @Roles('ADMIN')
+  @Roles('ADMIN', 'PROF', 'STUDENT')
   @UseInterceptors(FileInterceptor('photo', { storage: storageConfig }))
   update(
     @Param('id', ParseIntPipe) id: number,
